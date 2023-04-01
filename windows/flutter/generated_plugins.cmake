@@ -3,6 +3,10 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  bitsdojo_window_windows
+  connectivity_plus
+  desktop_lifecycle
+  desktop_multi_window
   screen_retriever
   window_manager
 )

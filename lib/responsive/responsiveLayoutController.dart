@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
-class SplashController {
-  final double _WIDTH = 400;
-  final double _HEIGHT = 500;
-  SplashController();
+class ResponsiveLayoutController {
+  final double _WIDTH = 450;
+  final double _HEIGHT = 600;
+  ResponsiveLayoutController();
 
   double get getWidth => _WIDTH;
   double get getHeigth => _HEIGHT;
@@ -15,19 +15,17 @@ class SplashController {
     await windowManager.ensureInitialized();
 
     WindowOptions windowOptions = WindowOptions(
-      fullScreen: false,
-      size: Size(_WIDTH, _HEIGHT),
-      minimumSize: Size(_WIDTH, _HEIGHT),
-      maximumSize: Size(_WIDTH, _HEIGHT),
-      center: true,
-      backgroundColor: Colors.transparent,
-      skipTaskbar: false,
-      titleBarStyle: TitleBarStyle.hidden,
-    );
+        fullScreen: false,
+        size: Size(_WIDTH, _HEIGHT),
+        center: true,
+        backgroundColor: Colors.transparent,
+        skipTaskbar: false,
+        minimumSize: Size(_WIDTH, _HEIGHT),
+        titleBarStyle: TitleBarStyle.hidden);
+
     windowManager.waitUntilReadyToShow(windowOptions, () async {
       await windowManager.show();
       await windowManager.focus();
-      //await windowManager.setResizable(false);
     });
   }
 }

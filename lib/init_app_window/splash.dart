@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'package:ai_desktop_chat/init_app_window/splashController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
@@ -11,9 +13,63 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
-  SplashController _splashController = SplashController();
-  String _svgLogo = 'assets/ChatGPT.svg';
-  String _svgCompany = 'assets/OpenAI.svg';
+  final SplashController _splashController = SplashController();
+  ConnectivityResult _connectionStatus = ConnectivityResult.none;
+  final Connectivity _connectivity = Connectivity();
+  late StreamSubscription<ConnectivityResult> _connectivitySubscription;
+  final String _svgLogo = 'assets/ChatGPT.svg';
+  final String _svgCompany = 'assets/OpenAI.svg';
+
+  Future<void> _updateConnectionStatus(ConnectivityResult result) async {
+    setState(() {
+      _connectionStatus = result;
+    });
+  }
+
+  Future<void> initConnectivity() async {
+    final connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult != ConnectivityResult.wifi ||
+        connectivityResult != ConnectivityResult.ethernet) {
+      print('Couldn\'t check connectivity status');
+      return;
+    }
+    if (!mounted) {
+      return Future.value(null);
+    }
+
+    return _updateConnectionStatus(connectivityResult);
+  }
+
+  @override
+  initState() {
+    super.initState();
+    initConnectivity();
+    _connectivitySubscription =
+        _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
+  }
+
+  @override
+  void dispose() {
+    _connectivitySubscription.cancel();
+    super.dispose();
+  }
+
+  Widget OnlineWidget() {
+    if (_connectionStatus.name.toString().toLowerCase() == 'wifi' ||
+        _connectionStatus.name.toString().toLowerCase() == 'ethernet') {
+      return const SpinKitThreeBounce(
+        color: Colors.white,
+        size: 15,
+      );
+    }
+    return const Text(
+      'No internet connection',
+      style: TextStyle(
+        color: Color.fromRGBO(236, 236, 241, 1),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -45,10 +101,7 @@ class _SplashState extends State<Splash> {
                   height: 60,
                   width: _splashController.getWidth,
                 ),
-                const SpinKitThreeBounce(
-                  color: Colors.white,
-                  size: 15,
-                )
+                OnlineWidget(),
               ])),
             ),
             Container(

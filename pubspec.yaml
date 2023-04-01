@@ -41,6 +41,11 @@ dependencies:
   particles_flutter: ^0.1.4
   flutter_svg: ^1.1.6
   flutter_spinkit: ^5.1.0
+  desktop_multi_window: ^0.2.0
+  desktop_lifecycle: ^0.1.0
+  connectivity_plus: ^3.0.3
+  bitsdojo_window: ^0.1.5
+  http: ^0.13.5
 
 dev_dependencies:
   flutter_test:

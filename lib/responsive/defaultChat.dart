@@ -1,7 +1,11 @@
+import 'dart:developer';
+
+import 'package:ai_desktop_chat/components/chatInputField.dart';
 import 'package:ai_desktop_chat/components/topBar.dart';
 import 'package:ai_desktop_chat/responsive/responsiveLayoutController.dart';
 import 'package:flutter/material.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:ai_desktop_chat/components/drawer.dart' as components;
 
 class DefaultChat extends StatefulWidget {
   const DefaultChat({Key? key}) : super(key: key);
@@ -14,8 +18,7 @@ const borderColor = Color.fromRGBO(52, 53, 65, 1);
 final GlobalKey<ScaffoldState> _key = GlobalKey();
 
 class _DefaultChatState extends State<DefaultChat> {
-  final ResponsiveLayoutController _responsiveLayoutController =
-      ResponsiveLayoutController();
+  final List<String> _messages = [];
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +26,11 @@ class _DefaultChatState extends State<DefaultChat> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           key: _key,
-          drawer: Container(width: 200, color: Color.fromRGBO(52, 53, 65, 1)),
+          drawer: const Drawer(
+            width: 230,
+            backgroundColor: Color.fromRGBO(52, 53, 65, 1),
+            child: components.Drawer(),
+          ),
           body: WindowBorder(
               color: borderColor,
               width: 0,
@@ -36,12 +43,18 @@ class _DefaultChatState extends State<DefaultChat> {
                   )),
                   Container(
                     height: 60,
-                    padding: EdgeInsets.all(10),
-                    color: Color.fromRGBO(52, 53, 65, 1),
-                    child: const TextField(),
+                    padding: const EdgeInsets.all(10),
+                    color: const Color.fromRGBO(52, 53, 65, 1),
+                    child: ChatInputField(onSendMessage: _sendMessage),
                   )
                 ],
               )),
         ));
+  }
+
+  void _sendMessage(String message) {
+    setState(() {
+      _messages.add(message);
+    });
   }
 }

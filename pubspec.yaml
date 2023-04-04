@@ -46,6 +46,8 @@ dependencies:
   connectivity_plus: ^3.0.3
   bitsdojo_window: ^0.1.5
   http: ^0.13.5
+  expandable_menu: ^0.0.5
+  animated_widgets: ^1.1.0
 
 dev_dependencies:
   flutter_test:

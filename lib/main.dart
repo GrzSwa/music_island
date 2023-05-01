@@ -1,23 +1,27 @@
-import 'package:ai_desktop_chat/init_app_window/splash.dart';
-import 'package:ai_desktop_chat/init_app_window/splashController.dart';
-import 'package:ai_desktop_chat/responsive/Chat.dart';
-import 'package:ai_desktop_chat/responsive/defaultChat.dart';
-import 'package:ai_desktop_chat/responsive/responsiveLayoutController.dart';
-import 'package:ai_desktop_chat/responsive/responsive_layout.dart';
+import 'package:ai_desktop_chat/mainWindow.dart';
+import 'package:ai_desktop_chat/constants/const.dart' as constants;
 import 'package:flutter/material.dart';
-import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:window_manager/window_manager.dart';
 
-void main() {
-  //SplashController _splashController = SplashController();
-  ResponsiveLayoutController _responsiveLayoutController =
-      ResponsiveLayoutController();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await windowManager.ensureInitialized();
 
-  //_splashController.initAppWindow();
-  //runApp(const Splash());
+  WindowOptions windowOptions = const WindowOptions(
+      size: constants.SIZE,
+      skipTaskbar: false,
+      titleBarStyle: TitleBarStyle.hidden,
+      alwaysOnTop: true);
+  windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.setPosition(Offset(1600 / 2 - 100, 3));
+    await windowManager.setResizable(false);
+    await windowManager.setMaximizable(false);
+    await windowManager.setMinimizable(false);
+    await windowManager.setAsFrameless();
+    await windowManager.setOpacity(0.9);
+    await windowManager.show();
+    await windowManager.focus();
+  });
 
-  _responsiveLayoutController.initAppWindow();
-  runApp(ResponsiveLayout(
-    chat: const Chat(),
-    defaultChat: const DefaultChat(),
-  ));
+  runApp(MainWindow());
 }

@@ -4,10 +4,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:ai_desktop_chat/constants/const.dart' as constants;
 import 'package:marquee/marquee.dart';
-import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:animated_widgets/animated_widgets.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class MainWindow extends StatefulWidget {
   const MainWindow({Key? key}) : super(key: key);
@@ -19,11 +19,24 @@ class MainWindow extends StatefulWidget {
 class _MainWindowState extends State<MainWindow> with WindowListener {
   Size _screen = constants.SIZE;
   String _defaultText = "";
-  String _link = 'https://www.youtube.com/watch?v=jVTgpDkNTHU';
+  String _link = 'https://www.youtube.com/watch?v=WXBHCQYxwr0';
   bool _submenuVisible = false;
   bool _pasteLink = false;
   bool _isPlaying = false;
+  String _url = '';
   final player = AudioPlayer();
+
+  Future<void> test() async {
+    var yt = YoutubeExplode();
+    var video = await yt.videos.streamsClient.getManifest('WXBHCQYxwr0');
+    var audio = video.audioOnly;
+    setState(() {
+      _url = audio.first.url.toString();
+    });
+    print("succes");
+    yt.close();
+  }
+
   @override
   void initState() {
     windowManager.addListener(this);
@@ -80,8 +93,7 @@ class _MainWindowState extends State<MainWindow> with WindowListener {
                     Color.fromRGBO(0, 0, 0, 1),
                   ], begin: Alignment.bottomRight, end: Alignment.topCenter),
                 ),
-                child: SingleChildScrollView(
-                    child: Row(
+                child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -109,7 +121,6 @@ class _MainWindowState extends State<MainWindow> with WindowListener {
                                 child: GestureDetector(
                                     onTap: () async {
                                       print("back");
-                                      await player.setUrl(_link);
                                     },
                                     child: const Icon(
                                       FontAwesomeIcons.backward,
@@ -120,12 +131,8 @@ class _MainWindowState extends State<MainWindow> with WindowListener {
                                 cursor: SystemMouseCursors.click,
                                 child: GestureDetector(
                                     onTap: () async {
-                                      if (_isPlaying) {
-                                        await player.pause();
-                                      } else {
-                                        await player.play();
-                                        print(player.duration);
-                                      }
+                                      print("play");
+                                      player.play(UrlSource(_url));
                                     },
                                     child: const Icon(
                                       FontAwesomeIcons.pause,
@@ -137,6 +144,7 @@ class _MainWindowState extends State<MainWindow> with WindowListener {
                                 child: GestureDetector(
                                     onTap: () {
                                       print("next");
+                                      player.pause();
                                     },
                                     child: const Icon(
                                       FontAwesomeIcons.forward,
@@ -184,7 +192,7 @@ class _MainWindowState extends State<MainWindow> with WindowListener {
                               )),
                         )),
                   ],
-                ))),
+                )),
           ),
           TranslationAnimatedWidget.tween(
               enabled: _pasteLink,
@@ -220,10 +228,13 @@ class _MainWindowState extends State<MainWindow> with WindowListener {
                               style: TextStyle(color: Colors.white))),
                       TextButton.icon(
                           onPressed: () {
-                            Clipboard.getData(Clipboard.kTextPlain)
+                            /*Clipboard.getData(Clipboard.kTextPlain)
                                 .then((value) {
                               print(value?.text);
-                            });
+                            })*/
+                            ;
+
+                            test();
                           },
                           icon: const Icon(FontAwesomeIcons.paste,
                               size: 8, color: Colors.white),

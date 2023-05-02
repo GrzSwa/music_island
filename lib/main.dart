@@ -11,16 +11,17 @@ void main() async {
       size: constants.SIZE,
       skipTaskbar: false,
       titleBarStyle: TitleBarStyle.hidden,
+      backgroundColor: Colors.transparent,
       alwaysOnTop: true);
   windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.show();
+    await windowManager.focus();
     await windowManager.setPosition(Offset(1600 / 2 - 100, 3));
     await windowManager.setResizable(false);
     await windowManager.setMaximizable(false);
     await windowManager.setMinimizable(false);
     await windowManager.setAsFrameless();
     await windowManager.setOpacity(0.9);
-    await windowManager.show();
-    await windowManager.focus();
   });
 
   runApp(MainWindow());

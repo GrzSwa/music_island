@@ -50,6 +50,7 @@ dependencies:
   audioplayers: ^4.0.1
   marquee: ^2.2.3
   font_awesome_flutter: ^10.4.0
+  just_audio: ^0.9.32
 
 dev_dependencies:
   flutter_test:

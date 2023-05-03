@@ -1,3 +1,10 @@
+import 'dart:math';
+
+import 'package:ai_desktop_chat/widgets/animate_wave_music/aniamted_waves.dart';
+import 'package:ai_desktop_chat/widgets/animate_wave_music/animated_object.dart';
+import 'package:ai_desktop_chat/widgets/audio_button.dart';
+import 'package:ai_desktop_chat/widgets/menu.dart';
+import 'package:ai_desktop_chat/widgets/title_song_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -70,28 +77,20 @@ class _MainWindowState extends State<MainWindow> with WindowListener {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Stack(children: [
-          AnimatedContainer(
-            width: _screen.width,
-            height: _submenuVisible ? 300 : 0,
-            margin: EdgeInsets.only(top: _screen.height * 0.5),
-            decoration: const BoxDecoration(
-                color: Colors.amber,
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(25),
-                    bottomRight: Radius.circular(25))),
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.linear,
-            child: const Text("test"),
-          ),
+          Menu(visible: _submenuVisible),
           DragToMoveArea(
             child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.green,
+                  color: Colors.black,
                   borderRadius: BorderRadius.circular(25),
-                  gradient: const LinearGradient(colors: [
-                    Color.fromRGBO(197, 0, 0, 1),
-                    Color.fromRGBO(0, 0, 0, 1),
-                  ], begin: Alignment.bottomRight, end: Alignment.topCenter),
+                  gradient: const LinearGradient(
+                      transform: GradientRotation(pi / 3),
+                      colors: [
+                        Color.fromRGBO(197, 0, 0, 1),
+                        Color.fromRGBO(0, 0, 0, 1),
+                      ],
+                      begin: Alignment.bottomRight,
+                      end: Alignment.topCenter),
                 ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -116,80 +115,65 @@ class _MainWindowState extends State<MainWindow> with WindowListener {
                                       size: 10,
                                       color: Colors.white,
                                     ))),
-                            MouseRegion(
-                                cursor: SystemMouseCursors.click,
-                                child: GestureDetector(
-                                    onTap: () async {
-                                      print("back");
-                                    },
-                                    child: const Icon(
-                                      FontAwesomeIcons.backward,
-                                      size: 12,
-                                      color: Colors.white70,
-                                    ))),
-                            MouseRegion(
-                                cursor: SystemMouseCursors.click,
-                                child: GestureDetector(
-                                    onTap: () async {
-                                      print("play");
-                                      player.play(UrlSource(_url));
-                                    },
-                                    child: const Icon(
-                                      FontAwesomeIcons.pause,
-                                      size: 12,
-                                      color: Colors.white70,
-                                    ))),
-                            MouseRegion(
-                                cursor: SystemMouseCursors.click,
-                                child: GestureDetector(
-                                    onTap: () {
-                                      print("next");
-                                      player.pause();
-                                    },
-                                    child: const Icon(
-                                      FontAwesomeIcons.forward,
-                                      size: 12,
-                                      color: Colors.white70,
-                                    ))),
+                            AudioButton(
+                              onPressed: () {
+                                print("back");
+                              },
+                              icon: FontAwesomeIcons.backward,
+                            ),
+                            AudioButton.play(
+                              onPressed: () {
+                                print("play");
+                                setState(() {
+                                  _isPlaying = !_isPlaying;
+                                });
+                              },
+                              play: _isPlaying,
+                            ),
+                            AudioButton(
+                              onPressed: () {
+                                print("next");
+                              },
+                              icon: FontAwesomeIcons.forward,
+                            ),
                           ]),
                     ),
                     Container(
                       height: _screen.height,
                       width: _screen.width * 0.38,
-                      child: GestureDetector(
-                          onDoubleTap: () {
-                            windowManager.setPosition(Offset(200, 0));
-                            debugPrint("double click");
-                          },
-                          child: _defaultText != ""
-                              ? Marquee(
-                                  textScaleFactor: 0.25,
-                                  blankSpace: 25,
-                                  text: _defaultText,
-                                  style: const TextStyle(
-                                      color: Colors.white70,
-                                      decoration: TextDecoration.none),
-                                )
-                              : SizedBox()),
+                      child: TitleSongWidget(
+                        onDoubleTap: () {
+                          windowManager.setPosition(const Offset(200, 0));
+                          debugPrint("double click");
+                        },
+                      ),
                     ),
                     Container(
                         height: _screen.height,
                         width: _screen.width * 0.14,
-                        child: MouseRegion(
-                          cursor: SystemMouseCursors.click,
-                          child: GestureDetector(
-                              onTap: () {
-                                print("wave");
-                                setState(() {
-                                  _pasteLink = !_pasteLink;
-                                });
-                              },
-                              child: SvgPicture.asset(
-                                'assets/wave.svg',
-                                width: 8,
-                                height: 8,
-                                color: const Color.fromRGBO(236, 236, 241, 1),
-                              )),
+                        child: GestureDetector(
+                          onTap: () {
+                            print("wave");
+                            setState(() {
+                              _pasteLink = !_pasteLink;
+                            });
+                          },
+                          child: MouseRegion(
+                              cursor: SystemMouseCursors.click,
+                              child: Align(
+                                  child: AniamtedWaves(
+                                size: const Size(2.0, 10.0),
+                                animation: true,
+                                color: Color.fromRGBO(236, 236, 241, 1),
+                                duration: const [
+                                  700,
+                                  500,
+                                  400,
+                                  600,
+                                  300,
+                                  200,
+                                ],
+                              ))),
                         )),
                   ],
                 )),
@@ -232,7 +216,6 @@ class _MainWindowState extends State<MainWindow> with WindowListener {
                                 .then((value) {
                               print(value?.text);
                             })*/
-                            ;
 
                             test();
                           },

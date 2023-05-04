@@ -1,14 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AudioButton extends StatefulWidget {
   final VoidCallback onPressed;
   final IconData? icon;
   final bool play = false;
+
   const AudioButton({Key? key, required this.onPressed, required this.icon})
       : super(key: key);
 
   const AudioButton.play({Key? key, required this.onPressed, bool play = false})
       : icon = null,
+        super(key: key);
+
+  const AudioButton.backward({Key? key, required this.onPressed})
+      : icon = FontAwesomeIcons.backward,
+        super(key: key);
+
+  const AudioButton.forward({Key? key, required this.onPressed})
+      : icon = FontAwesomeIcons.forward,
+        super(key: key);
+
+  const AudioButton.loop({Key? key, required this.onPressed})
+      : icon = FontAwesomeIcons.repeat,
+        super(key: key);
+
+  const AudioButton.shuffle({Key? key, required this.onPressed})
+      : icon = FontAwesomeIcons.shuffle,
         super(key: key);
 
   @override
@@ -64,8 +82,8 @@ class _AudioButtonState extends State<AudioButton>
               },
               child: AnimatedIcon(
                 icon: widget.play
-                    ? AnimatedIcons.play_pause
-                    : AnimatedIcons.pause_play,
+                    ? AnimatedIcons.pause_play
+                    : AnimatedIcons.play_pause,
                 progress: _animationController,
                 size: 16,
                 color: Colors.white70,

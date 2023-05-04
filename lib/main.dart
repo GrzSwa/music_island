@@ -1,14 +1,15 @@
 import 'package:ai_desktop_chat/mainWindow.dart';
-import 'package:ai_desktop_chat/constants/const.dart' as constants;
+import 'package:ai_desktop_chat/settings/config.dart';
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 
 void main() async {
+  ApplicationConfiguration config = ApplicationConfiguration();
   WidgetsFlutterBinding.ensureInitialized();
   await windowManager.ensureInitialized();
 
-  WindowOptions windowOptions = const WindowOptions(
-      size: constants.SIZE,
+  WindowOptions windowOptions = WindowOptions(
+      size: config.getSize,
       skipTaskbar: false,
       titleBarStyle: TitleBarStyle.hidden,
       backgroundColor: Colors.transparent,
@@ -16,12 +17,12 @@ void main() async {
   windowManager.waitUntilReadyToShow(windowOptions, () async {
     await windowManager.show();
     await windowManager.focus();
-    await windowManager.setPosition(Offset(1600 / 2 - 100, 3));
+    await windowManager.setPosition(config.getPosition);
     await windowManager.setResizable(false);
     await windowManager.setMaximizable(false);
     await windowManager.setMinimizable(false);
     await windowManager.setAsFrameless();
-    await windowManager.setOpacity(0.9);
+    await windowManager.setOpacity(config.getOpacity);
   });
 
   runApp(MainWindow());

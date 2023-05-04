@@ -1,0 +1,25 @@
+position: 
+  width: 200.0
+  height: 25.0
+  positionX: 672.8
+  positionY: 1.6
+  opacity: 1.0
+theme: 
+  background: 
+    r: 0
+    g: 0
+    b: 0
+    o: 1.0
+  gradient: true
+  gradientColor: 
+    color1: 
+      r: 197
+      g: 0
+      b: 0
+      o: 1.0
+    color2: 
+      r: 0
+      g: 0
+      b: 0
+      o: 1.0
+

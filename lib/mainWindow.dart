@@ -1,30 +1,26 @@
 import 'dart:math';
-
+import 'package:ai_desktop_chat/settings/config.dart';
 import 'package:ai_desktop_chat/widgets/animate_wave_music/aniamted_waves.dart';
-import 'package:ai_desktop_chat/widgets/animate_wave_music/animated_object.dart';
 import 'package:ai_desktop_chat/widgets/audio_button.dart';
 import 'package:ai_desktop_chat/widgets/menu.dart';
 import 'package:ai_desktop_chat/widgets/title_song_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:window_manager/window_manager.dart';
-import 'package:ai_desktop_chat/constants/const.dart' as constants;
-import 'package:marquee/marquee.dart';
 import 'dart:async';
 import 'package:animated_widgets/animated_widgets.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class MainWindow extends StatefulWidget {
-  const MainWindow({Key? key}) : super(key: key);
+  MainWindow({Key? key}) : super(key: key);
 
   @override
   _MainWindowState createState() => _MainWindowState();
 }
 
 class _MainWindowState extends State<MainWindow> with WindowListener {
-  Size _screen = constants.SIZE;
+  Size _screen = ApplicationConfiguration().getSize;
   String _defaultText = "";
   String _link = 'https://www.youtube.com/watch?v=WXBHCQYxwr0';
   bool _submenuVisible = false;
@@ -115,11 +111,10 @@ class _MainWindowState extends State<MainWindow> with WindowListener {
                                       size: 10,
                                       color: Colors.white,
                                     ))),
-                            AudioButton(
+                            AudioButton.backward(
                               onPressed: () {
                                 print("back");
                               },
-                              icon: FontAwesomeIcons.backward,
                             ),
                             AudioButton.play(
                               onPressed: () {
@@ -130,11 +125,10 @@ class _MainWindowState extends State<MainWindow> with WindowListener {
                               },
                               play: _isPlaying,
                             ),
-                            AudioButton(
+                            AudioButton.forward(
                               onPressed: () {
                                 print("next");
                               },
-                              icon: FontAwesomeIcons.forward,
                             ),
                           ]),
                     ),
@@ -163,7 +157,7 @@ class _MainWindowState extends State<MainWindow> with WindowListener {
                               child: Align(
                                   child: AniamtedWaves(
                                 size: const Size(2.0, 10.0),
-                                animation: true,
+                                animation: _isPlaying,
                                 color: Color.fromRGBO(236, 236, 241, 1),
                                 duration: const [
                                   700,

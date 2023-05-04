@@ -52,6 +52,10 @@ dependencies:
   font_awesome_flutter: ^10.4.0
   audioplayers_windows: ^2.0.1
   youtube_explode_dart: ^1.12.4
+  yaml: ^3.1.1
+  yaml_writer: ^1.0.3
+  flip_card: ^0.7.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

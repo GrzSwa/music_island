@@ -5,27 +5,37 @@ class AudioButton extends StatefulWidget {
   final VoidCallback onPressed;
   final IconData? icon;
   final bool play = false;
+  final double? size;
 
-  const AudioButton({Key? key, required this.onPressed, required this.icon})
+  const AudioButton(
+      {Key? key, required this.onPressed, required this.icon, this.size})
       : super(key: key);
 
-  const AudioButton.play({Key? key, required this.onPressed, bool play = false})
+  const AudioButton.play(
+      {Key? key,
+      required this.onPressed,
+      bool play = false,
+      double this.size = 14})
       : icon = null,
         super(key: key);
 
-  const AudioButton.backward({Key? key, required this.onPressed})
+  const AudioButton.backward(
+      {Key? key, required this.onPressed, double this.size = 10})
       : icon = FontAwesomeIcons.backward,
         super(key: key);
 
-  const AudioButton.forward({Key? key, required this.onPressed})
+  const AudioButton.forward(
+      {Key? key, required this.onPressed, double this.size = 10})
       : icon = FontAwesomeIcons.forward,
         super(key: key);
 
-  const AudioButton.loop({Key? key, required this.onPressed})
+  const AudioButton.loop(
+      {Key? key, required this.onPressed, double this.size = 10})
       : icon = FontAwesomeIcons.repeat,
         super(key: key);
 
-  const AudioButton.shuffle({Key? key, required this.onPressed})
+  const AudioButton.shuffle(
+      {Key? key, required this.onPressed, double this.size = 10})
       : icon = FontAwesomeIcons.shuffle,
         super(key: key);
 
@@ -69,7 +79,7 @@ class _AudioButtonState extends State<AudioButton>
               onTap: widget.onPressed,
               child: Icon(
                 widget.icon,
-                size: 12,
+                size: widget.size,
                 color: Colors.white70,
               )));
     } else {
@@ -85,7 +95,7 @@ class _AudioButtonState extends State<AudioButton>
                     ? AnimatedIcons.pause_play
                     : AnimatedIcons.play_pause,
                 progress: _animationController,
-                size: 16,
+                size: widget.size,
                 color: Colors.white70,
               )));
     }

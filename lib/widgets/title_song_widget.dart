@@ -17,8 +17,8 @@ class _TitleSongWidgetState extends State<TitleSongWidget> {
         onDoubleTap: widget.onDoubleTap,
         child: widget.title != null
             ? Marquee(
-                textScaleFactor: 0.25,
-                blankSpace: 25,
+                textScaleFactor: 0.20,
+                blankSpace: 22,
                 text: widget.title!,
                 style: const TextStyle(
                     color: Colors.white70, decoration: TextDecoration.none),

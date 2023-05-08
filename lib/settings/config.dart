@@ -52,33 +52,33 @@ class ApplicationConfiguration {
   bool get getGradientVisible => _GRADIENT;
 
   set setSize(Size size) {
-    update();
     _SIZE = size;
+    update();
   }
 
   set setPosition(Offset position) {
-    update();
     _POSITION = position;
+    update();
   }
 
   set setOpacity(double opacity) {
-    update();
     _OPACITY = opacity;
+    update();
   }
 
   set setBackgroundColor(Color background) {
-    update();
     _BACKGROUND = background;
+    update();
   }
 
   set setLinearGradient(LinearGradient linearGradient) {
-    update();
     _LINEAR_GRADIENT = linearGradient;
+    update();
   }
 
   set setGradientVisible(bool gradientVisible) {
-    update();
     _GRADIENT = gradientVisible;
+    update();
   }
 
   Map read() {
@@ -98,7 +98,7 @@ class ApplicationConfiguration {
         'height': _SIZE.height,
         'positionX': _POSITION.dx,
         'positionY': _POSITION.dy,
-        'opacity': _BACKGROUND.opacity
+        'opacity': _OPACITY
       },
       'theme': {
         'background': {
